@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreLocation
-//import AFNetworking
 
 class PhotoListViewController: UICollectionViewController {
 
@@ -26,8 +25,10 @@ class PhotoListViewController: UICollectionViewController {
         locationManager.delegate = self
         
         collectionView?.collectionViewLayout = PhotoLayout()
+
+        collectionView?.registerClass(PhotoCell.self, forCellWithReuseIdentifier: photoCellIdentifier)
         
-        //updateLocationManagerForStatus(CLLocationManager.authorizationStatus())
+        collectionView?.backgroundColor = UIColor.whiteColor()
     }
 
     
@@ -46,28 +47,27 @@ class PhotoListViewController: UICollectionViewController {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(photoCellIdentifier, forIndexPath: indexPath) as! PhotoCell
         cell.backgroundColor = UIColor.greenColor()
+        cell.imageView.contentMode = .ScaleAspectFill
         
         let photo = photos[indexPath.row]
         
-        if let url = photo.imageURL() {
-            cell.imageView.setImageWithURL(url)
+        photoStore.fetchImageForPhoto(photo, size: .Thumbnail) { (image) -> () in
+            cell.imageView.image = image
         }
-        
+
         return cell
     }
+
+    // MARK: - UICollectionViewDelegate
     
-    // MARK: - Navigation
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let vc = PhotoDetailViewController()
+        vc.photo = photos[indexPath.row]
+        vc.store = photoStore
         
-        if (segue.identifier == "showPhotoDetailSegue") {
-
-            guard let targetPath = collectionView!.indexPathForCell(sender as! UICollectionViewCell) else {
-                return
-            }
-            
-            let detailVC = segue.destinationViewController as! PhotoDetailViewController
-            detailVC.photo = photos[targetPath.row]
+        if let nav = self.navigationController {
+            nav.pushViewController(vc, animated: true)
         }
     }
 }
@@ -117,7 +117,7 @@ extension PhotoListViewController: CLLocationManagerDelegate {
         
         let location = locations[0]
         
-        photoStore.fetchPhotosForLocation(location) { (photos) -> () in
+        photoStore.fetchPhotosForCoordinate(location.coordinate) { (photos) -> () in
             
             self.photos = photos
             self.collectionView?.reloadData()

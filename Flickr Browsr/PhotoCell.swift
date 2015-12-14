@@ -10,6 +10,24 @@ import UIKit
 
 class PhotoCell: UICollectionViewCell {
 
-    @IBOutlet weak var imageView: UIImageView!
+    weak var imageView: UIImageView!
+    
+    override init(frame: CGRect) {
+        
+        super.init(frame: frame)
+
+        let iv = UIImageView(frame: self.bounds)
+        
+        self.contentView.addSubview(iv)
+        
+        self.imageView = iv
+        self.backgroundColor = UIColor.whiteColor()
+        
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
 }

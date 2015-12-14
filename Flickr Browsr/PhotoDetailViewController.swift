@@ -10,15 +10,32 @@ import UIKit
 
 class PhotoDetailViewController: UIViewController {
 
-    @IBOutlet weak var imageView: UIImageView!
+    var photoContainer: PhotoContainerView?
     
     var photo:Photo?
+    var store:PhotoStore?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let imgURL = photo?.imageURL() {
-            imageView.setImageWithURL(imgURL)
+        let container = PhotoContainerView(frame: view.bounds)
+        view.addSubview(container)
+        photoContainer = container
+        
+        setupPhoto()
+    }
+    
+    func setupPhoto() {
+        
+        guard let photo = self.photo else {
+            return;
+        }
+
+        store?.fetchImageForPhoto(photo, size: .Large) { (image) -> () in
+            
+            if let img = image {
+                self.photoContainer?.updateViewWithImage(img)
+            }
         }
     }
 }

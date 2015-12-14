@@ -8,6 +8,20 @@
 
 import UIKit
 
+enum PhotoSize: Int {
+    case Thumbnail = 0
+    case Large
+
+    func toString() -> String {
+        switch self {
+        case .Thumbnail:
+            return "m"
+        case .Large:
+            return "b"
+        }
+    }
+
+}
 
 class Photo : NSObject {
     
@@ -38,8 +52,8 @@ class Photo : NSObject {
     }
     
     
-    func imageURL(size:String = "m") -> NSURL? {
-        return NSURL(string: "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)_\(size).jpg")
+    func imageURL(size:PhotoSize = .Thumbnail) -> NSURL? {
+        return NSURL(string: "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)_\(size.toString()).jpg")
     }
 
 }

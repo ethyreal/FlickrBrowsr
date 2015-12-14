@@ -9,15 +9,18 @@
 import UIKit
 import CoreLocation
 
+
 class PhotoStore {
 
-    func fetchPhotosForLocation(location:CLLocation, completion:(photos:[Photo]) ->()) {
+    let testCoordinate = CLLocationCoordinate2D(latitude: 32.7596910894256, longitude: -117.14874120671)
+    
+    func fetchPhotosForCoordinate(coordinate:CLLocationCoordinate2D, completion:(photos:[Photo]) ->()) {
         
         guard let components = NSURLComponents(string: "https://api.flickr.com/services/rest/") else {
             return; // TODO: handle error
         }
         
-        components.queryItems = queryItemsForCoordinates(location.coordinate)
+        components.queryItems = queryItemsForCoordinates(coordinate)
         
         guard let url = components.URL else {
             return; // TODO: handle error
@@ -83,4 +86,30 @@ class PhotoStore {
         
         return result
     }
+    
+    
+    func fetchImageForPhoto(photo: Photo, size:PhotoSize, completion:(image:UIImage?) ->()) {
+        
+        guard let url = photo.imageURL(size) else {
+            // TODO: handle url failure
+            return;
+        }
+        
+        let request = NSURLRequest(URL: url)
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) -> Void in
+            
+            guard let rawData = data else {
+                // TODO: handle no data
+                return
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                let img = UIImage(data: rawData)
+                completion(image: img)
+            })
+        }
+        
+        task.resume()
+    }
+
 }
