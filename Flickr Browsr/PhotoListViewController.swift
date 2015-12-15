@@ -33,6 +33,11 @@ class PhotoListViewController: UICollectionViewController {
         collectionView?.backgroundColor = UIColor.whiteColor()
     }
 
+    override func didReceiveMemoryWarning() {
+        for photo in photos {
+            photo.images.removeAll()
+        }
+    }
     
     // MARK: UICollectionViewDataSource  
     

@@ -58,7 +58,7 @@ class PhotoStore {
         let format      = NSURLQueryItem(name: "format", value: "json")
         let callback    = NSURLQueryItem(name: "nojsoncallback", value: "1")
         let page        = NSURLQueryItem(name: "page", value: "1")
-        let perPage     = NSURLQueryItem(name: "per_page", value: "20")
+        let perPage     = NSURLQueryItem(name: "per_page", value: "30")
         let latitude    = NSURLQueryItem(name: "lat", value: "\(coordinates.latitude)")
         let longitude   = NSURLQueryItem(name: "lon", value: "\(coordinates.longitude)")
         let extras      = NSURLQueryItem(name: "extras", value: "description")
@@ -95,6 +95,11 @@ class PhotoStore {
             return;
         }
         
+        if let img = photo.images[size] {
+            completion(image: img)
+            return
+        }
+        
         let request = NSURLRequest(URL: url)
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) -> Void in
             
@@ -105,6 +110,7 @@ class PhotoStore {
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 let img = UIImage(data: rawData)
+                photo.images[size] = img
                 completion(image: img)
             })
         }

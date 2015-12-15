@@ -30,8 +30,8 @@ class Photo : NSObject {
     var secret:String = ""
     var server:String = ""
     var title:String = ""
-    var thumbnail:UIImage?
     var photoDescription:String = ""
+    var images = [PhotoSize:UIImage]()
     
     class func photoFromJSON(data:NSDictionary) -> Photo {
         
