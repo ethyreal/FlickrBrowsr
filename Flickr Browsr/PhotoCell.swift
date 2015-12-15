@@ -17,10 +17,18 @@ class PhotoCell: UICollectionViewCell {
         super.init(frame: frame)
 
         let iv = UIImageView(frame: self.bounds)
+        iv.translatesAutoresizingMaskIntoConstraints = false
         
         self.contentView.addSubview(iv)
-        
         self.imageView = iv
+        
+        let viewsDictionary = ["imageView" : self.imageView]
+        
+        let hConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|[imageView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        self.addConstraints(hConstraint)
+        let vConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:|[imageView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        self.contentView.addConstraints(vConstraint)
+        
         self.backgroundColor = UIColor.whiteColor()
         
     }

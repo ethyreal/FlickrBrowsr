@@ -46,8 +46,8 @@ class PhotoListViewController: UICollectionViewController {
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(photoCellIdentifier, forIndexPath: indexPath) as! PhotoCell
-        cell.backgroundColor = UIColor.greenColor()
-        cell.imageView.contentMode = .ScaleAspectFill
+        //cell.backgroundColor = UIColor.greenColor()
+        cell.imageView.contentMode = .ScaleAspectFit
         
         let photo = photos[indexPath.row]
         
@@ -121,7 +121,7 @@ extension PhotoListViewController: CLLocationManagerDelegate {
             
             self.photos = photos
             self.collectionView?.reloadData()
-            print("fetched photos: \(photos)")
+            //print("fetched photos: \(photos)")
         }
     }
 }

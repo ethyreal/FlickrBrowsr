@@ -57,7 +57,7 @@ class PhotoContainerView: UIScrollView {
         
         minimumZoomScale = min(scaleWidth, scaleHeight)
         
-        let zoomRect = rectForZoomingToScale(scaleHeight)
+        let zoomRect = rectForZoomingToScale(minimumZoomScale)
         zoomToRect(zoomRect, animated: false)
     }
 
