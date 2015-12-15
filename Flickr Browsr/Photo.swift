@@ -31,6 +31,7 @@ class Photo : NSObject {
     var server:String = ""
     var title:String = ""
     var thumbnail:UIImage?
+    var photoDescription:String = ""
     
     class func photoFromJSON(data:NSDictionary) -> Photo {
         
@@ -46,6 +47,14 @@ class Photo : NSObject {
             }
             
             photo.setValue(value, forKey: key)
+        }
+
+        // special case for descrption
+        // gross little piramid of doom
+        if let descriptionData = data["description"] {
+            if let desc = descriptionData["_content"] {
+                photo.photoDescription = desc as! String
+            }
         }
         
         return photo

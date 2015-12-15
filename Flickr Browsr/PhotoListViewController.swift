@@ -22,6 +22,8 @@ class PhotoListViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Photo's Taken Nearby"
+        
         locationManager.delegate = self
         
         collectionView?.collectionViewLayout = PhotoLayout()

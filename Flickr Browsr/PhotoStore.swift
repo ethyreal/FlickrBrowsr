@@ -61,8 +61,8 @@ class PhotoStore {
         let perPage     = NSURLQueryItem(name: "per_page", value: "20")
         let latitude    = NSURLQueryItem(name: "lat", value: "\(coordinates.latitude)")
         let longitude   = NSURLQueryItem(name: "lon", value: "\(coordinates.longitude)")
-        
-        return [method, apiKey, format, callback, page, perPage, latitude, longitude]
+        let extras      = NSURLQueryItem(name: "extras", value: "description")
+        return [method, apiKey, format, callback, page, perPage, latitude, longitude, extras]
     }
     
     func photosFromJSON(data:NSDictionary) -> [Photo] {
